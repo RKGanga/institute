@@ -1,6 +1,6 @@
 import './globals.css'
 import type { Metadata } from 'next'
-import SiteHeader from '@/components/SiteHeader'
+import AppHeaderController from '../components/AppHeaderController'
 
 export const metadata: Metadata = {
   title: 'Ram Tech Solutions',
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
       </head>
       <body>
-        <SiteHeader />
+        <AppHeaderController />
         <main>{children}</main>
       </body>
     </html>

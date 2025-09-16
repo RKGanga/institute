@@ -1,6 +1,17 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/serviceClient'
 
+export async function GET() {
+  const supabase = createServiceClient()
+  const { data, error } = await supabase
+    .from('courses')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 })
+  return NextResponse.json({ ok: true, data })
+}
+
 export async function POST(req: Request) {
   const body = await req.json()
   const supabase = createServiceClient()
