@@ -7,6 +7,9 @@
 }
 
 html, body, #__next { height: 100%; }
+html, body { overflow-x: hidden; }
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, video, canvas { max-width: 100%; height: auto; display: block; }
 html { scroll-behavior: smooth; }
 body { @apply bg-gray-900 text-white; }
 

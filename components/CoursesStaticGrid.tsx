@@ -1,6 +1,8 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
+import { useToast } from '@/components/ToastProvider'
 
 type CourseCard = {
   name: string
@@ -41,11 +43,13 @@ const empty: Form = { name: '', email: '', phone: '', course: '', message: '' }
 type Props = { embedded?: boolean }
 
 export default function CoursesStaticGrid({ embedded = false }: Props) {
+  const { show } = useToast()
   const [open, setOpen] = useState(false)
   const [form, setForm] = useState<Form>(empty)
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState<string>('')
   const [error, setError] = useState<string>('')
+  const firstFieldRef = useRef<HTMLInputElement | null>(null)
 
   function startRegister(course: string) {
     setForm({ ...empty, course })
@@ -53,6 +57,22 @@ export default function CoursesStaticGrid({ embedded = false }: Props) {
     setError('')
     setOpen(true)
   }
+
+  // Focus first field and allow ESC to close modal
+  useEffect(() => {
+    if (!open) return
+    const t = setTimeout(() => {
+      firstFieldRef.current?.focus()
+    }, 0)
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
@@ -69,18 +89,31 @@ export default function CoursesStaticGrid({ embedded = false }: Props) {
       if (!res.ok) throw new Error(json?.error || 'Failed to submit')
       setDone('Thank you! We will contact you shortly.')
       setForm(empty)
+      show('Registered your interest. We will contact you shortly.', 'success')
     } catch (e: any) {
       setError(e?.message ?? 'Failed to submit')
+      show(e?.message ?? 'Failed to submit', 'error')
     } finally {
       setLoading(false)
     }
   }
 
   const Grid = (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {COURSES.map((c) => (
         <div key={c.name} className="bg-gray-800 rounded-2xl overflow-hidden shadow-sm transition-all hover:shadow-xl hover:-translate-y-1">
-          <div className="h-40 bg-center bg-cover" style={{ backgroundImage: c.img ? `url(${c.img})` : undefined }} />
+          <div className="relative aspect-video bg-gray-700">
+            {c.img ? (
+              <Image
+                src={c.img}
+                alt={`SAP ${c.name}`}
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+                priority={false}
+              />
+            ) : null}
+          </div>
           <div className="p-5">
             <h3 className="text-lg font-bold">SAP {c.name}</h3>
             <p className="mt-3 text-gray-300 text-sm">{c.reasons[0]}</p>
@@ -107,42 +140,42 @@ export default function CoursesStaticGrid({ embedded = false }: Props) {
 
       {/* Modal */}
       {open && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4" role="dialog" aria-modal="true">
-          <div className="w-full max-w-lg bg-gray-900 rounded-2xl border border-gray-800 p-6">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-black/70 p-4" role="dialog" aria-modal="true" aria-labelledby="register-title">
+          <div className="w-full max-w-[min(90vw,40rem)] bg-gray-900 rounded-2xl border border-gray-800 p-6 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold">Register for {form.course}</h3>
+              <h3 id="register-title" className="text-xl font-bold">Register for {form.course}</h3>
               <button onClick={() => setOpen(false)} className="h-8 w-8 grid place-items-center rounded hover:bg-gray-800">✕</button>
             </div>
             <form onSubmit={submit} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm mb-1">Name</label>
-                  <input value={form.name} onChange={e=>setForm({...form, name:e.target.value})} required className="w-full h-10 rounded-md px-3 bg-gray-800 border border-gray-700" />
+                  <input ref={firstFieldRef} value={form.name} onChange={e=>setForm({...form, name:e.target.value})} required className="w-full min-h-[44px] rounded-md px-3 bg-gray-800 border border-gray-700" autoComplete="name" />
                 </div>
                 <div>
                   <label className="block text-sm mb-1">Email</label>
-                  <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} required className="w-full h-10 rounded-md px-3 bg-gray-800 border border-gray-700" />
+                  <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} required className="w-full min-h-[44px] rounded-md px-3 bg-gray-800 border border-gray-700" autoComplete="email" inputMode="email" />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm mb-1">Phone Number</label>
-                  <input value={form.phone} onChange={e=>setForm({...form, phone:e.target.value})} required className="w-full h-10 rounded-md px-3 bg-gray-800 border border-gray-700" />
+                  <input type="tel" value={form.phone} onChange={e=>setForm({...form, phone:e.target.value})} required className="w-full min-h-[44px] rounded-md px-3 bg-gray-800 border border-gray-700" inputMode="tel" autoComplete="tel" />
                 </div>
                 <div>
                   <label className="block text-sm mb-1">Course Name</label>
-                  <input value={form.course} readOnly className="w-full h-10 rounded-md px-3 bg-gray-800 border border-gray-700" />
+                  <input value={form.course} readOnly className="w-full min-h-[44px] rounded-md px-3 bg-gray-800 border border-gray-700" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm mb-1">Message</label>
-                <textarea rows={3} value={form.message} onChange={e=>setForm({...form, message:e.target.value})} className="w-full rounded-md px-3 py-2 bg-gray-800 border border-gray-700" />
+                <textarea rows={3} value={form.message} onChange={e=>setForm({...form, message:e.target.value})} className="w-full rounded-md px-3 py-2 bg-gray-800 border border-gray-700" autoComplete="off" />
               </div>
               {error && <p className="text-red-400 text-sm">{error}</p>}
               {done && <p className="text-green-400 text-sm">{done}</p>}
               <div className="flex justify-end gap-2">
-                <button type="button" onClick={()=>setOpen(false)} className="rounded-md h-10 px-4 bg-gray-800 hover:bg-gray-700">Cancel</button>
-                <button disabled={loading} className="rounded-md h-10 px-4 bg-[--primary-color] hover:bg-indigo-500">
+                <button type="button" onClick={()=>setOpen(false)} className="rounded-md h-11 min-h-[44px] px-4 bg-gray-800 hover:bg-gray-700">Cancel</button>
+                <button disabled={loading} className="rounded-md h-11 min-h-[44px] px-4 bg-[--primary-color] hover:bg-indigo-500">
                   {loading ? 'Submitting…' : 'Submit'}
                 </button>
               </div>

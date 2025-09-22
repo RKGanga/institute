@@ -28,23 +28,16 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div style={{ maxWidth: 720, margin: "64px auto", padding: 24 }}>
-      <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 12 }}>Admin Dashboard</h1>
-      <p style={{ color: "#555", marginBottom: 24 }}>
+    <div className="max-w-3xl mx-auto my-16 px-4 sm:px-6">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-3">Admin Dashboard</h1>
+      <p className="text-white/60 mb-6">
         You are signed in as admin. Build the admin UI here.
       </p>
-      {error ? <p style={{ color: "#b00020" }}>{error}</p> : null}
+      {error ? <p className="text-red-400 mb-4">{error}</p> : null}
       <button
         onClick={onLogout}
         disabled={loading}
-        style={{
-          background: "#ef4444",
-          color: "white",
-          padding: "10px 16px",
-          borderRadius: 6,
-          border: 0,
-          cursor: loading ? "not-allowed" : "pointer",
-        }}
+        className="inline-flex items-center rounded-md bg-red-500 hover:bg-red-600 disabled:opacity-60 disabled:cursor-not-allowed text-white px-4 py-2"
       >
         {loading ? "Signing out..." : "Sign out"}
       </button>

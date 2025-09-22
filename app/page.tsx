@@ -1,4 +1,5 @@
 import { createClientServer } from '@/lib/supabase/serverClient'
+import RequestInfoForm from '@/components/RequestInfoForm'
 import HomeHeroAnimated from '@/components/HomeHeroAnimated'
 import CoursesStaticGrid from '@/components/CoursesStaticGrid'
 import DemoClassesCarousel from '@/components/DemoClassesCarousel'
@@ -18,12 +19,22 @@ export default async function HomePage() {
     .single()
   const stats = statsRow || { years: 0, courses: 0, students: 0, placements: 0 }
 
+  // Filter out sessions whose start_date is in the past
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcomingDemos = (demoClasses ?? []).filter((d: any) => {
+    if (!d?.start_date) return true; // keep if date missing
+    const dt = new Date(d.start_date);
+    dt.setHours(0, 0, 0, 0);
+    return dt >= today;
+  });
+
   return (
     <main className="min-h-screen bg-gray-900 text-white">
       {/* Global header is rendered from app/layout.tsx via <SiteHeader /> */}
 
       {/* Hero */}
-      <section className="relative min-h-[80vh] flex flex-col items-center justify-center text-center w-full px-0 py-24 md:py-32" style={{ background: 'radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)' }}>
+      <section className="relative min-h-[80vh] flex flex-col items-center justify-center text-center w-full px-0 py-24 md:py-32 overflow-hidden" style={{ background: 'radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)' }}>
         {/* animated blobs */}
         <div className="absolute inset-0 z-0 opacity-20">
           <div className="absolute top-1/4 left-1/4 w-72 md:w-96 h-72 md:h-96 bg-indigo-500 rounded-full blur-3xl animate-blob" />
@@ -120,7 +131,7 @@ export default async function HomePage() {
       <section className="py-20 sm:py-28 bg-gray-950" id="demo-classes">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Upcoming Demo Classes</h2>
-          <DemoClassesCarousel items={(demoClasses ?? []) as any[]} />
+          <DemoClassesCarousel items={(upcomingDemos ?? []) as any[]} />
         </div>
       </section>
 
@@ -137,23 +148,7 @@ export default async function HomePage() {
         <div className="max-w-xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Request Information</h2>
           <p className="text-lg text-gray-400 mb-8">Get more details about our courses, fees, and schedules. Contact us today!</p>
-          <form className="flex flex-col sm:flex-row gap-4" action={async (formData) => {
-  'use server'
-  const supabase = createClientServer()
-  const email = formData.get('email') as string
-  if (email && email.includes('@')) {
-    await supabase.from('student_requests').insert({
-      name: 'Website Request',
-      email,
-      phone: '',
-      course: 'General',
-      message: 'Homepage request info form',
-    })
-  }
-}}>
-            <input name="email" className="flex-grow h-14 px-6 rounded-full bg-gray-800 border-2 border-gray-700 focus:border-[--primary-color] focus:ring-0 text-white placeholder-gray-500" placeholder="Your Email" type="email" required />
-            <button className="flex-shrink-0 inline-flex items-center justify-center rounded-full h-14 px-8 bg-[--primary-color] text-white text-base font-bold hover:bg-indigo-500 transition-colors" type="button">Submit</button>
-          </form>
+          <RequestInfoForm />
         </div>
       </section>
 
@@ -168,8 +163,8 @@ export default async function HomePage() {
             <a className="hover:text-white transition-colors" href="/contact">Contact</a>
           </nav>
           <div className="flex justify-center gap-6 mb-4 text-sm">
-            <a className="hover:text-white transition-colors" href="#">Privacy Policy</a>
-            <a className="hover:text-white transition-colors" href="#">Terms of Service</a>
+            <a className="hover:text-white transition-colors" href="/privacy">Privacy Policy</a>
+            <a className="hover:text-white transition-colors" href="/terms">Terms of Service</a>
           </div>
           <p>© {new Date().getFullYear()} Ram Tech Solutions. All rights reserved.</p>
         </div>

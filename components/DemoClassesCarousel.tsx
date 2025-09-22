@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import Image from 'next/image'
 
 type Demo = {
   id: number
@@ -17,6 +18,9 @@ export default function DemoClassesCarousel({ items }: { items: Demo[] }) {
   const hoverRef = useRef<HTMLDivElement | null>(null)
   // Single banner image for all slides, served from Next.js public/ folder
   const defaultBanner = '/demo-banner.jpg'
+  // Touch swipe state
+  const startX = useRef<number | null>(null)
+  const deltaX = useRef<number>(0)
 
   useEffect(() => {
     if (list.length <= 1) return
@@ -37,23 +41,51 @@ export default function DemoClassesCarousel({ items }: { items: Demo[] }) {
     }
   }, [list.length])
 
+  // Touch handlers for swipe on mobile
+  function onTouchStart(e: React.TouchEvent<HTMLDivElement>) {
+    startX.current = e.touches[0].clientX
+    deltaX.current = 0
+  }
+  function onTouchMove(e: React.TouchEvent<HTMLDivElement>) {
+    if (startX.current === null) return
+    deltaX.current = e.touches[0].clientX - startX.current
+  }
+  function onTouchEnd() {
+    const threshold = 50 // px
+    if (Math.abs(deltaX.current) > threshold) {
+      setIndex((i) => {
+        if (deltaX.current < 0) return (i + 1) % list.length // swipe left -> next
+        return (i - 1 + list.length) % list.length // swipe right -> prev
+      })
+    }
+    startX.current = null
+    deltaX.current = 0
+  }
+
   if (list.length === 0) {
     return <div className="bg-gray-800 rounded-2xl text-center py-16 text-gray-400">No upcoming demo classes</div>
   }
 
   return (
-    <div ref={hoverRef} className="relative overflow-hidden rounded-2xl bg-gray-800 border border-gray-700">
+    <div ref={hoverRef} className="relative overflow-hidden rounded-2xl bg-gray-800 border border-gray-700" role="region" aria-roledescription="carousel" aria-label="Upcoming demo classes">
       <div
         className="flex transition-transform duration-1000 ease-out"
         style={{ transform: `translateX(-${index * 100}%)` }}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
       >
         {list.map((d) => (
           <div key={d.id} className="min-w-full grid md:grid-cols-2">
             {/* Banner image */}
-            <div className="relative">
-              <div
-                className="w-full h-64 md:h-full bg-center bg-cover"
-                style={{ backgroundImage: `url(${defaultBanner})` }}
+            <div className="relative h-64 md:h-full">
+              <Image
+                src={defaultBanner}
+                alt="Demo class banner"
+                fill
+                className="object-cover"
+                sizes="(min-width: 768px) 50vw, 100vw"
+                priority={false}
               />
             </div>
             {/* Content */}
@@ -78,13 +110,14 @@ export default function DemoClassesCarousel({ items }: { items: Demo[] }) {
 
       {/* Dots */}
       {list.length > 1 && (
-        <div className="absolute bottom-3 right-4 flex gap-1.5">
+        <div className="absolute bottom-3 right-4 flex gap-2">
           {list.map((_, i) => (
             <button
               key={i}
               aria-label={`Slide ${i + 1}`}
               onClick={() => setIndex(i)}
-              className={`h-2.5 w-2.5 rounded-full ${i === index ? 'bg-white' : 'bg-white/30 hover:bg-white/60'}`}
+              aria-pressed={i === index}
+              className={`h-3 w-3 rounded-full ${i === index ? 'bg-white' : 'bg-white/30 hover:bg-white/60'}`}
             />
           ))}
         </div>

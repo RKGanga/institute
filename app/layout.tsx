@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import AppHeaderController from '../components/AppHeaderController'
+import ToastProvider from '../components/ToastProvider'
 
 export const metadata: Metadata = {
   title: 'Ram Tech Solutions',
@@ -15,10 +16,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body>
-        <AppHeaderController />
-        <main>{children}</main>
+      <body className="overflow-x-hidden bg-gray-900 text-white">
+        <ToastProvider>
+          <AppHeaderController />
+          <main>{children}</main>
+        </ToastProvider>
       </body>
     </html>
   )
