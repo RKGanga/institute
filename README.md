@@ -1,4 +1,4 @@
-# Ram Tech Institute — Next.js + Supabase
+# Upskillo — Next.js + Supabase
 
 This is a Next.js (App Router) app wired for Supabase and Tailwind CSS. It scaffolds public pages and an admin area to integrate your Figma designs and data.
 

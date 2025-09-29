@@ -70,8 +70,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           >
             <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
           </button>
-          <div className="w-8 h-8 rounded-full bg-[#1172d4] flex items-center justify-center text-white font-bold text-lg">R</div>
-          <h1 className="text-lg font-semibold">Ram Tech</h1>
+          <div className="w-8 h-8 rounded-full bg-[#1172d4] flex items-center justify-center text-white font-bold text-lg">U</div>
+          <h1 className="text-lg font-semibold">Upskillo</h1>
         </div>
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex items-center gap-3">

@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Privacy Policy - Ram Tech Solutions',
-  description: 'Read Ram Tech Solutions privacy policy.'
+  title: 'Privacy Policy - Upskillo',
+  description: 'Read Upskillo privacy policy.'
 }
 
 import BackBar from '@/components/BackBar'
@@ -19,7 +19,7 @@ export default function PrivacyPolicyPage() {
           <div className="rounded-xl border border-gray-800 bg-gray-800/60 p-6 md:p-8 shadow-lg">
             <div className="prose prose-invert prose-slate max-w-none prose-headings:mt-8 prose-h2:text-2xl md:prose-h2:text-3xl prose-h3:text-xl prose-a:text-indigo-400 hover:prose-a:text-indigo-300 prose-li:marker:text-[--primary-color]">
             <p>
-              Ram Tech Solutions ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect,
+              Upskillo ("we", "us", or "our") is committed to protecting your privacy. This Privacy Policy explains how we collect,
               use, and safeguard your information when you visit our website or use our services.
             </p>
 
@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
 
             <h2>Contact Us</h2>
             <p>
-              For questions about this Privacy Policy, please contact us at support@ramtechsolutions.com
+              For questions about this Privacy Policy, please contact us at support@upskillo.com
             </p>
             </div>
           </div>

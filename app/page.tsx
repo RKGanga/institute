@@ -81,15 +81,15 @@ export default async function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[{
               img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC0MqoZdI4AQqhtV4XSXvQ_pjN2fCZdwpZrkDXTlsAQORHcrmR6DNnf4HT5Sg8UeAr9GeySbC4V5H0VoREiZDGpmjFDptXXAaTHMbZPFzaQZifiqoqa8iLQ7uJAl6-l05HLLTeMqCY2z6UQ3SeF59AdPugA-yCgUREDUhTxM3pMCQ4g1jbkAQddW2a1OsNIjHumU4vYGbelH0gWFPOz-80I7Lm_KDNmuhoUkvSJBXQOumTVp30kAkVMNItgp7yF0Us8wiXN5qHCNWGK',
-              q: 'The SAP training at Ram Tech Solutions was exceptional. The instructors were knowledgeable and supportive, and the course content was comprehensive. I highly recommend it!',
+              q: 'The SAP training at Upskillo was exceptional. The instructors were knowledgeable and supportive, and the course content was comprehensive. I highly recommend it!',
               n: 'Alex Turner', r: 'SAP Consultant'
             },{
               img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDmq2Tq7hfbKV8O0BvCsirTz48at9Dw5MGUr0sQmzCiHBMSsEvQxLf5nt_d-rfKBUKvuUpMAlkHEt7CiYp535rjluN1gI6j7egpxqPJKBcfALa_H3EnE-5xheN8M2nOTSEdrsXls4mSTnroDMKPPuVs6V4-4hDMUuS7d3w0G14q0A8RuJV_aCQKvc0JgMRCKN4ZODKopHQ7ySeoZj1nGBwdnqA0ds8HB5NggEI2HTd7QYMbS2zMcfoWrmxjP8hxQYiBb6MP9NZ_Pfe0',
-              q: "I was able to switch my career to SAP with the help of Ram Tech Solutions. The training was practical and focused on real-world scenarios.",
+              q: "I was able to switch my career to SAP with the help of Upskillo. The training was practical and focused on real-world scenarios.",
               n: 'Sarah Chen', r: 'SAP Analyst'
             },{
               img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAv1rGxY3g5J07YStaftm99FhzJltd8HygMXM5oHBGvz1ufebShdxx7GOCCq8yoQ7AERIz0g-7_cyKUi9nOhdSQkibmQ_Y-ptebBC5wvFrk-64ZteqT5tZmRu6WjSSzNiNg0Z57Rno7I1II4anrtUoSdCL_QFg4lndECanx1z4g5FB-enSrKGKRRXnXMAXlmckxT56VOxmBUVJ9wlTulKOXaxOCx5oFKrCoi4zY_xUyTqSYomQdwp4DkLn2plhSE58ehwCk1x7Ik-RQ',
-              q: "The support from Ram Tech Solutions didn't end with the training. They provided excellent career guidance and helped me land my dream job.",
+              q: "The support from Upskillo didn't end with the training. They provided excellent career guidance and helped me land my dream job.",
               n: 'David Lee', r: 'SAP Project Manager'
             }].map((t, i) => (
               <div key={i} className="bg-gray-800 p-8 rounded-2xl flex flex-col items-center text-center">
@@ -166,7 +166,7 @@ export default async function HomePage() {
             <a className="hover:text-white transition-colors" href="/privacy">Privacy Policy</a>
             <a className="hover:text-white transition-colors" href="/terms">Terms of Service</a>
           </div>
-          <p>© {new Date().getFullYear()} Ram Tech Solutions. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Upskillo. All rights reserved.</p>
         </div>
       </footer>
     </main>

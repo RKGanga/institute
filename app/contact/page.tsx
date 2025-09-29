@@ -34,7 +34,7 @@ export default async function ContactPage() {
     // ignore and use defaults
   }
 
-  const email = settings.contact_email || 'support@ramtechsolutions.com'
+  const email = settings.contact_email || 'support@upskillo.com'
   const phoneIN = settings.contact_phone_in || '+91 98765 43210'
   const phoneAU = settings.contact_phone_au || '+61 4 1234 5678'
   const phoneUK = settings.contact_phone_uk || '+44 7700 900000'
@@ -124,7 +124,7 @@ export default async function ContactPage() {
             <a className="hover:text-white text-sm" href="#">Privacy Policy</a>
             <a className="hover:text-white text-sm" href="#">Terms of Service</a>
           </div>
-          <p className="text-sm">© {new Date().getFullYear()} Ram Tech Solutions. All rights reserved.</p>
+          <p className="text-sm">© {new Date().getFullYear()} Upskillo. All rights reserved.</p>
         </div>
       </footer>
     </main>

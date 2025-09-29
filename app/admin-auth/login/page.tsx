@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
                 <path d="M10 5a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 100-6 3 3 0 000 6z"></path>
               </svg>
             </div>
-            <h2 className="text-xl font-bold">Ram Tech Solutions</h2>
+            <h2 className="text-xl font-bold">Upskillo</h2>
           </div>
         </header>
 
